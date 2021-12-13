@@ -24,6 +24,7 @@ Game::Game() :
 	setupFontAndText(); // load font 
 	setupSprite(); // load texture
 	setupVertexArray();
+	setupShape();
 }
 
 /// <summary>
@@ -97,6 +98,31 @@ void Game::processKeys(sf::Event t_event)
 	{
 		m_exitGame = true;
 	}
+	if (sf::Keyboard::Y == t_event.key.code)
+	{
+		m_colour = sf::Color::Yellow;
+	}
+	if (sf::Keyboard::B == t_event.key.code)
+	{
+		m_colour = sf::Color::Blue;
+	}
+	if (sf::Keyboard::R == t_event.key.code)
+	{
+		m_colour = sf::Color::Red;
+	}
+	if (sf::Keyboard::T == t_event.key.code)
+	{
+		m_points.setPrimitiveType(sf::Triangles);	
+	}
+	if (sf::Keyboard::Q  == t_event.key.code)
+	{
+		m_points.setPrimitiveType(sf::Quads);
+	}
+	if (sf::Keyboard::L == t_event.key.code)
+	{
+		m_points.setPrimitiveType(sf::LinesStrip);
+	}
+
 }
 
 /// <summary>
@@ -116,10 +142,12 @@ void Game::update(sf::Time t_deltaTime)
 /// </summary>
 void Game::render()
 {
-	m_window.clear(sf::Color::White);
-	m_window.draw(m_points);
+	m_window.clear(sf::Color::Black);
+	m_window.draw(m_points, &m_logoTexture);
 	//m_window.draw(m_welcomeMessage);
 	//m_window.draw(m_logoSprite);
+	m_window.draw(m_circle);
+	m_window.draw(m_rectangel);
 	m_window.display();
 }
 
@@ -127,21 +155,21 @@ void Game::setupVertexArray()
 {
 	sf::Vertex newVertex;
 	m_colour = sf::Color(240, 35, 96, 255);
-	m_points.setPrimitiveType(sf::Lines);
+	m_points.setPrimitiveType(sf::Quads);
 	m_points.clear();
-	newVertex.position = sf::Vector2f{ 100.0f,100.0f };
-	newVertex.color = m_colour;
-	m_points.append(newVertex);
-	newVertex.position = sf::Vector2f{ 200.0f,100.0f };
-	newVertex.color = m_colour;
-	m_points.append(newVertex);
+	//newVertex.position = sf::Vector2f{ 100.0f,100.0f };
+	//newVertex.color = m_colour;
+	//m_points.append(newVertex);
+	//newVertex.position = sf::Vector2f{ 200.0f,100.0f };
+	//newVertex.color = m_colour;
+	//m_points.append(newVertex);
 
-	newVertex.position = sf::Vector2f{ 500.0f,200.0f };
-	newVertex.color = m_colour;
-	m_points.append(newVertex);
-	newVertex.position = sf::Vector2f{ 200.0f,200.0f };
-	newVertex.color = m_colour;
-	m_points.append(newVertex);
+	//newVertex.position = sf::Vector2f{ 500.0f,200.0f };
+	//newVertex.color = m_colour;
+	//m_points.append(newVertex);
+	//newVertex.position = sf::Vector2f{ 200.0f,200.0f };
+	//newVertex.color = m_colour;
+	//m_points.append(newVertex);
 
 }
 
@@ -181,10 +209,36 @@ void Game::setupSprite()
 
 void Game::processMouseClicks(sf::Event t_event)
 {
+
 	sf::Vertex newVertex;
 	newVertex.position.x = t_event.mouseButton.x;
 	newVertex.position.y = t_event.mouseButton.y;
-	newVertex.color = m_colour;
-	m_colour.r = (m_colour.r + 30U) % 255;
+	newVertex.color = sf::Color::White;
+	newVertex.texCoords.x = cornerx[m_index];
+	newVertex.texCoords.y = cornery[m_index];
+	m_index = (m_index + 1)% 4;
+
+	if (sf::Mouse::Left == t_event.mouseButton.button)
+	{
+		m_colour.r = (m_colour.r + 20U) % 255;
+		std::cout << m_colour.r << std::endl;
+	}
+	else
+	{
+		m_colour.r = (m_colour.r - 20U) % 255;
+		std::cout << m_colour.r << std::endl;
+	}
 	m_points.append(newVertex);
+}
+
+void Game::setupShape()
+{
+	m_circle.setFillColor( sf::Color::Red);
+	m_circle.setRadius(550.0f);
+	m_circle.setPosition(400.0f, 400.0f);
+	m_circle.setPointCount(120);
+
+	m_rectangel.setFillColor(sf::Color::Green);
+	m_rectangel.setPosition(10, 10);
+	m_rectangel.setSize(sf::Vector2f(50.0f, 200.0f));
 }

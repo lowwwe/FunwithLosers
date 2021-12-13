@@ -33,6 +33,7 @@ private:
 	void setupFontAndText();
 	void setupSprite();
 	void processMouseClicks(sf::Event t_event);
+	void setupShape();
 
 	sf::RenderWindow m_window; // main SFML window
 	sf::Font m_ArialBlackfont; // font used by message
@@ -43,7 +44,11 @@ private:
 
 	sf::VertexArray m_points;// vertex array for drawing
 	sf::Color m_colour; // drawing colour
-
+	int cornerx[4] ={ 0,128,128,0 };
+	int cornery[4] = { 0,0,128,128 };
+	int m_index = 0;
+	sf::CircleShape m_circle;
+	sf::RectangleShape m_rectangel;
 };
 
 #endif // !GAME_HPP
