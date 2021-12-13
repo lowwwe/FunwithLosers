@@ -1,7 +1,8 @@
 /// <summary>
 /// @author Peter Lowe
-/// @date May 2019
-///
+/// @date December 2019
+/// estimate 2 hours
+/// 
 /// you need to change the above lines or lose marks
 /// </summary>
 
@@ -22,6 +23,7 @@ Game::Game() :
 {
 	setupFontAndText(); // load font 
 	setupSprite(); // load texture
+	setupVertexArray();
 }
 
 /// <summary>
@@ -77,6 +79,10 @@ void Game::processEvents()
 		{
 			processKeys(newEvent);
 		}
+		if (sf::Event::MouseButtonReleased == newEvent.type)
+		{
+			processMouseClicks(newEvent);
+		}
 	}
 }
 
@@ -111,9 +117,32 @@ void Game::update(sf::Time t_deltaTime)
 void Game::render()
 {
 	m_window.clear(sf::Color::White);
-	m_window.draw(m_welcomeMessage);
-	m_window.draw(m_logoSprite);
+	m_window.draw(m_points);
+	//m_window.draw(m_welcomeMessage);
+	//m_window.draw(m_logoSprite);
 	m_window.display();
+}
+
+void Game::setupVertexArray()
+{
+	sf::Vertex newVertex;
+	m_colour = sf::Color(240, 35, 96, 255);
+	m_points.setPrimitiveType(sf::Lines);
+	m_points.clear();
+	newVertex.position = sf::Vector2f{ 100.0f,100.0f };
+	newVertex.color = m_colour;
+	m_points.append(newVertex);
+	newVertex.position = sf::Vector2f{ 200.0f,100.0f };
+	newVertex.color = m_colour;
+	m_points.append(newVertex);
+
+	newVertex.position = sf::Vector2f{ 500.0f,200.0f };
+	newVertex.color = m_colour;
+	m_points.append(newVertex);
+	newVertex.position = sf::Vector2f{ 200.0f,200.0f };
+	newVertex.color = m_colour;
+	m_points.append(newVertex);
+
 }
 
 /// <summary>
@@ -148,4 +177,14 @@ void Game::setupSprite()
 	}
 	m_logoSprite.setTexture(m_logoTexture);
 	m_logoSprite.setPosition(300.0f, 180.0f);
+}
+
+void Game::processMouseClicks(sf::Event t_event)
+{
+	sf::Vertex newVertex;
+	newVertex.position.x = t_event.mouseButton.x;
+	newVertex.position.y = t_event.mouseButton.y;
+	newVertex.color = m_colour;
+	m_colour.r = (m_colour.r + 30U) % 255;
+	m_points.append(newVertex);
 }

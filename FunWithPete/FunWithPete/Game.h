@@ -27,9 +27,12 @@ private:
 	void processKeys(sf::Event t_event);
 	void update(sf::Time t_deltaTime);
 	void render();
+
+	void setupVertexArray();
 	
 	void setupFontAndText();
 	void setupSprite();
+	void processMouseClicks(sf::Event t_event);
 
 	sf::RenderWindow m_window; // main SFML window
 	sf::Font m_ArialBlackfont; // font used by message
@@ -37,6 +40,9 @@ private:
 	sf::Texture m_logoTexture; // texture used for sfml logo
 	sf::Sprite m_logoSprite; // sprite used for sfml logo
 	bool m_exitGame; // control exiting game
+
+	sf::VertexArray m_points;// vertex array for drawing
+	sf::Color m_colour; // drawing colour
 
 };
 
